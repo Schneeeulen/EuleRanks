@@ -2,11 +2,14 @@ package msi.schneeeule.euleRanks.System;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.event.user.UserDataRecalculateEvent;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.InheritanceNode;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Duration;
 
@@ -114,6 +117,15 @@ public class LuckPermsIntegration {
         }
 
         return null;
+    }
+
+    public static void eventBus(JavaPlugin plugin) {
+        LuckPermsProvider.get().getEventBus().subscribe(plugin, UserDataRecalculateEvent.class, event -> {
+            Player p = Bukkit.getPlayer(event.getUser().getUniqueId());
+            if (p != null) {
+                DisplayManager.updatePlayer(p);
+            }
+        });
     }
 
 }
