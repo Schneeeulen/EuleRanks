@@ -14,10 +14,14 @@ public final class Eule extends JavaPlugin {
     public static Eule instance;
     public static Boolean foundLuckPerms = false;
 
+    // Configs
+    public static Boolean nametagPrefixes;
+
     @Override
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        nametagPrefixes = this.getConfig().getBoolean("nametagPrefixes");
 
         // Commands
         getCommand("euleranks").setExecutor(new PluginCommand());
