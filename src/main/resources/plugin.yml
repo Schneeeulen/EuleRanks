@@ -1,0 +1,62 @@
+name: EuleRanks
+version: '1.0'
+main: msi.schneeeule.euleRanks.Eule
+prefix: EuleRanks
+api-version: '1.21'
+author: Schneeeule_
+description: Elektroeule Rank Provider
+
+permissions:
+  owl.team.member:
+    default: op
+  owl.command.eulerankplugin:
+    default: op
+
+  owl.premium.special:
+    default: false
+
+  owl.commands.rank:
+    default: true
+
+  owl.chat.colourcodes:
+    default: op
+
+  owl.rank.admin:
+    default: false
+  owl.rank.management:
+    default: false
+  owl.rank.mod:
+    default: false
+  owl.rank.dev+:
+    default: false
+  owl.rank.dev:
+    default: false
+  owl.rank.support+:
+    default: false
+  owl.rank.support:
+    default: false
+  owl.rank.design+:
+    default: false
+  owl.rank.design:
+    default: false
+  owl.rank.partner:
+    default: false
+  owl.rank.vip:
+    default: false
+  owl.rank.plus:
+    default: false
+  owl.rank.mvp:
+    default: false
+  owl.rank.premium:
+    default: false
+  owl.rank.user:
+    default: true
+
+commands:
+  rank:
+    permission: owl.commands.rank
+    description: Shows your Rank
+    aliases: premium
+  euleranks:
+    permission: owl.command.eulerankplugin
+    description: Manages the Plugin EuleRanks
