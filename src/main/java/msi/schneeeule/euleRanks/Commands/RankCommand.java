@@ -53,7 +53,7 @@ public class RankCommand implements CommandExecutor {
             }  else {
                 builder.append("dauerhaft ");
             }
-            builder.append("den Rang: "+pRank.getName() + RankProvider.getPlusOption(p) + "\n");
+            builder.append("den Rang: "+pRank.getName() + "\n");
         } else {
             // Begrenzt Premium
             builder.append("§7› Du hast noch §f"
