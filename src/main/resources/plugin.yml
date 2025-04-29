@@ -17,6 +17,8 @@ permissions:
 
   owl.commands.rank:
     default: true
+  owl.commands.rank.other:
+    default: op
 
   owl.chat.colourcodes:
     default: op

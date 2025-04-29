@@ -6,7 +6,6 @@ import msi.schneeeule.euleRanks.System.ChatFunction;
 import msi.schneeeule.euleRanks.System.DisplayManager;
 import msi.schneeeule.euleRanks.System.LuckPermsIntegration;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Eule extends JavaPlugin {
@@ -42,10 +41,6 @@ public final class Eule extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            DisplayManager.unregisterTeam(p);
-        }
-
+        this.getLogger().info("Auf Wiedersehen!");
     }
 }
