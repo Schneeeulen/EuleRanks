@@ -21,15 +21,15 @@ permissions:
   owl.chat.colourcodes:
     default: op
 
-  owl.rank.admin:
+  owl.rank.administration:
     default: false
   owl.rank.management:
     default: false
-  owl.rank.mod:
+  owl.rank.moderation:
     default: false
-  owl.rank.dev+:
+  owl.rank.development+:
     default: false
-  owl.rank.dev:
+  owl.rank.development:
     default: false
   owl.rank.support+:
     default: false

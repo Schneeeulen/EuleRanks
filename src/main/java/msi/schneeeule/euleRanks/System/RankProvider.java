@@ -5,11 +5,11 @@ import org.bukkit.entity.Player;
 
 public class RankProvider {
     public enum Ranks {
-        ADMINISTRATION("owl.rank.admin", "Administration", "Admin", "§f", ChatColor.WHITE, 1000),
+        ADMINISTRATION("owl.rank.administration", "Administration", "Admin", "§f", ChatColor.WHITE, 1000),
         MANAGEMENT("owl.rank.management", "Management", "Manage", "§9", ChatColor.BLUE, 950),
-        MODERATION("owl.rank.mod", "Moderation", "Mod", "§4", ChatColor.DARK_RED, 900),
-        DEVELOPMENT_PLUS("owl.rank.dev+", "Development+", "Dev+", "§2", ChatColor.DARK_GREEN, 850),
-        DEVELOPMENT("owl.rank.dev", "Development", "Dev", "§2", ChatColor.DARK_GREEN, 800),
+        MODERATION("owl.rank.moderation", "Moderation", "Mod", "§4", ChatColor.DARK_RED, 900),
+        DEVELOPMENT_PLUS("owl.rank.development+", "Development+", "Dev+", "§2", ChatColor.DARK_GREEN, 850),
+        DEVELOPMENT("owl.rank.development", "Development", "Dev", "§2", ChatColor.DARK_GREEN, 800),
         SUPPORT_PLUS("owl.rank.support+", "Support+", "Sup+", "§e", ChatColor.YELLOW, 750),
         SUPPORT("owl.rank.support", "Support", "Sup", "§e", ChatColor.YELLOW, 700),
         DESIGN_PLUS("owl.rank.design+", "Design+", "Design+", "§3", ChatColor.DARK_AQUA, 650),
@@ -64,6 +64,12 @@ public class RankProvider {
 
     public static String getPlusOption(Player p) {
         if (p.hasPermission("owl.rank.plus") && Ranks.getRank(p).getPriority() < 500) return "+";
+        return "";
+    }
+
+    public static String getColouredPlusOption(Player p) {
+        if (p.hasPermission("owl.rank.plus") && Ranks.getRank(p).getPriority() < 500)
+            return Ranks.getRank(p).getColourcode() + "+";
         return "";
     }
 
