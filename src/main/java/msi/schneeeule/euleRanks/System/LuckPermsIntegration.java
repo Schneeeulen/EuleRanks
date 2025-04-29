@@ -34,8 +34,7 @@ public class LuckPermsIntegration {
 
             if (node instanceof InheritanceNode inheritanceNode) {
                 if (!inheritanceNode.hasExpiry()) {
-                    String groupName = inheritanceNode.getGroupName();
-                    Group group = api.getGroupManager().getGroup(groupName);
+                    Group group = api.getGroupManager().getGroup(inheritanceNode.getGroupName());
 
                     if (group != null) {
                         for (Node groupNode : group.getNodes()) {
@@ -74,8 +73,7 @@ public class LuckPermsIntegration {
             }
 
             if (node instanceof InheritanceNode inheritanceNode) {
-                String groupName = inheritanceNode.getGroupName();
-                Group group = api.getGroupManager().getGroup(groupName);
+                Group group = api.getGroupManager().getGroup(inheritanceNode.getGroupName());
 
                 if (group != null) {
                     for (Node groupNode : group.getNodes()) {

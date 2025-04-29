@@ -30,7 +30,15 @@ public class RankCommand implements CommandExecutor {
         }
 
         if (RankProvider.Ranks.getRank(p) == RankProvider.Ranks.USER) {
-            p.sendMessage("§7› Du hast aktuell keinen Premium Rang");
+            p.sendMessage("§7› Du verfügst aktuell über keinen Premium-Rang!");
+
+            // Sollte nicht vorkommen
+            if (p.hasPermission("owl.rank.plus")) {
+                if (LuckPermsIntegration.hasLifetimePermission(p, "owl.rank.plus")) {
+                    p.sendMessage("§7› Allerdings hast du ein §aPlus§7 ohne eingetragene Ablaufzeit");
+                } else p.sendMessage("§7› Allerdings hast du noch ein §aPlus§7 für §f"
+                        + LuckPermsIntegration.getPermissionTime(p, "owl.rank.plus"));
+            }
             return true;
         }
 
@@ -64,7 +72,7 @@ public class RankCommand implements CommandExecutor {
 
         if (LuckPermsIntegration.hasLifetimePermission(p, "owl.rank.plus")) {
             // Dauerhaft Plus
-            builder.append("§7› Dein " + pRank.getColourcode() + "Plus§7 hat keine eingetragene Ablaufzeit!");
+            builder.append("§7› Dein " + pRank.getColourcode() + "Plus§7 hat keine eingetragene Ablaufzeit");
         } else if (p.hasPermission("owl.rank.plus")) {
             builder.append("§7› Dein " + pRank.getColourcode() +"Plus§7 hält noch §f"
                     + LuckPermsIntegration.getPermissionTime(p, "owl.rank.plus"));
