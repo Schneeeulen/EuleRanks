@@ -1,5 +1,5 @@
 name: EuleRanks
-version: '1.0.2'
+version: '1.0.3'
 main: msi.schneeeule.euleRanks.Eule
 prefix: EuleRanks
 api-version: '1.21'

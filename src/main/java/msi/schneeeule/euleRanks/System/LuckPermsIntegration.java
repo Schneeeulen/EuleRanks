@@ -227,32 +227,31 @@ public class LuckPermsIntegration {
     }
 
     public static CompletableFuture<Boolean> hasPermission(UUID uuid, String permission) {
-        LuckPerms api = LuckPermsProvider.get();
-
-        return api.getUserManager().loadUser(uuid).thenApply(user -> {
-            if (user == null) {
-                return false;
-            }
-
-            for (Node node : user.getNodes()) {
-                if (node.getKey().equalsIgnoreCase(permission)) {
-                    return true;
-                }
-
-                if (node instanceof InheritanceNode inheritanceNode) {
-                    Group group = api.getGroupManager().getGroup(inheritanceNode.getGroupName());
-                    if (group != null) {
-                        for (Node groupNode : group.getNodes()) {
-                            if (groupNode.getKey().equalsIgnoreCase(permission)) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return false;
+        return LuckPermsProvider.get().getUserManager().loadUser(uuid).thenApply(user -> {
+            if (user == null) return false;
+            return user.getCachedData().getPermissionData().checkPermission(permission).asBoolean();
         });
+    }
+
+    public static RankProvider.Ranks getRank(UUID uuid) {
+        CompletableFuture<User> userFuture = LuckPermsProvider.get().getUserManager().loadUser(uuid);
+        try {
+            User user = userFuture.get();
+            if (user == null) return null;
+
+            for (RankProvider.Ranks rank : RankProvider.Ranks.values()) {
+                if (rank.getPermission() == null) continue;
+
+                boolean hasPermission = user.getCachedData().getPermissionData().checkPermission(rank.getPermission()).asBoolean();
+                if (hasPermission) {
+                    return rank;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return RankProvider.Ranks.FALLBACK;
     }
 
 
