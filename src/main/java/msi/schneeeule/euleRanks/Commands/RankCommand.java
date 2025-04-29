@@ -51,6 +51,15 @@ public class RankCommand implements CommandExecutor {
             builder.append("§7› Du hast noch §f"
                     + LuckPermsIntegration.getPermissionTime(p, pRank.getPermission()) +
                     " §7den Rang: " + pRank.getName()+"\n");
+
+            for (RankProvider.Ranks rank : RankProvider.Ranks.values()) {
+                if (rank.getPermission() == null) continue;
+                if (LuckPermsIntegration.hasLifetimePermission(p, rank.getPermission()) && rank.getPriority() < 500) {
+                    builder.append("§7› Zudem besitzt du dauerhaft "+rank.getName()+"\n");
+                    break;
+                }
+            }
+
         }
 
         if (LuckPermsIntegration.hasLifetimePermission(p, "owl.rank.plus")) {
