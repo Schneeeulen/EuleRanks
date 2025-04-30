@@ -38,14 +38,22 @@ public class RankCommand implements CommandExecutor {
             if (uuid == null) {
                 sender.sendMessage("§7› Der angegebene Spieler konnte nicht geladen werden");
             }
+            if (!Bukkit.getOfflinePlayer(uuid).hasPlayedBefore()) {
+                sender.sendMessage("§7› Der angegebene Spieler ist nicht auf dem Server registriert");
+                return true;
+            }
 
-            sender.sendMessage("\n§7› " + Bukkit.getOfflinePlayer(uuid).getName() + " hat den Rang:\n"
+            StringBuilder builder = new StringBuilder();
+
+            builder.append("\n§7› " + Bukkit.getOfflinePlayer(uuid).getName() + " hat den Rang:\n"
                     + "§7› " + LuckPermsIntegration.getRank(uuid).getName());
 
             LuckPermsIntegration.hasPermission(uuid, "owl.rank.plus").thenAccept(hasPermission -> {
-                if (hasPermission) sender.sendMessage("§7› Das " + LuckPermsIntegration.getRank(uuid).getColourcode()
-                        + "Plus §7ist aktiv");
+                if (hasPermission) builder.append("\n§7› Das " + LuckPermsIntegration.getRank(uuid).getColourcode()
+                        + "Plus §7ist aktiv\n ");
+                else builder.append("\n ");
 
+                sender.sendMessage(builder.toString());
             });
 
             return true;
