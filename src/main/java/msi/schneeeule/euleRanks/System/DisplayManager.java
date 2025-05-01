@@ -1,6 +1,8 @@
 package msi.schneeeule.euleRanks.System;
 
 import msi.schneeeule.euleRanks.Eule;
+import msi.schneeeule.euleRanks.Events.RankDisplayUpdateEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,6 +42,7 @@ public class DisplayManager implements Listener {
         team.addPlayer(p);
         team.setColor(rank.getColour());
         if (Eule.nametagPrefixes) team.setPrefix(rank.getPrefix() + RankProvider.getPlusOption(p) + RankProvider.spacer);
+        Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TEAM));
     }
 
     public static void unregisterTeam(Player p) {
@@ -61,6 +64,7 @@ public class DisplayManager implements Listener {
         p.setPlayerListName((rank.getPrefix() == null ? "" :
                 rank.getPrefix() + RankProvider.getPlusOption(p) + RankProvider.spacer)
                 + rank.getColourcode() + p.getName());
+        Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TABLIST));
     }
 
     public static String getPlayerListName(Player p) {
