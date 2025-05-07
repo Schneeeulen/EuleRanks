@@ -2,7 +2,9 @@ package msi.schneeeule.euleRanks.System;
 
 import msi.schneeeule.euleRanks.Eule;
 import msi.schneeeule.euleRanks.Events.RankDisplayUpdateEvent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,14 +36,16 @@ public class DisplayManager implements Listener {
         int priority = 1000 - RankProvider.Ranks.getRank(p).getPriority();
         if (p.hasPermission("owl.rank.plus")) priority = priority - RankProvider.plus_priority_boost;
         if (priority < 0) priority = 0;
-        String teamname = priority + "." + p.getName().toLowerCase();
+        String teamname = String.format("%04d", priority) + "." + p.getName().toLowerCase();
         if (p.getScoreboard().getTeam(teamname) == null) {
             p.getScoreboard().registerNewTeam(teamname);
         }
         Team team = p.getScoreboard().getTeam(teamname);
         team.addPlayer(p);
-        team.setColor(rank.getColour());
-        if (Eule.nametagPrefixes) team.setPrefix(rank.getPrefix() + RankProvider.getPlusOption(p) + RankProvider.spacer);
+        team.setColor(Eule.grayNametags ? ChatColor.GRAY : ChatColor.WHITE);
+        if (Eule.nametagPrefixes && rank.getPrefix() != null) {
+            team.prefix(rank.getPrefix().append(RankProvider.getPlusOption(p).append(RankProvider.spacer)));
+        }
         Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TEAM));
     }
 
@@ -61,17 +65,20 @@ public class DisplayManager implements Listener {
 
     public static void setPlayerListName(Player p) {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
-        p.setPlayerListName((rank.getPrefix() == null ? "" :
-                rank.getPrefix() + RankProvider.getPlusOption(p) + RankProvider.spacer)
-                + rank.getColourcode() + p.getName());
+        if (rank.getPrefix() == null) {
+            p.playerListName(Component.text(p.getName(), rank.getColour()));
+        } else p.playerListName(rank.getPrefix()
+                .append(RankProvider.getPlusOption(p))
+                .append(RankProvider.spacer).append(Component.text(p.getName(), rank.getColour())));
         Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TABLIST));
     }
 
-    public static String getPlayerListName(Player p) {
+    public static Component getPlayerListName(Player p) {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
-        return (rank.getPrefix() == null ? "" :
-                rank.getPrefix() + RankProvider.getPlusOption(p) + RankProvider.spacer)
-                + rank.getColourcode() + p.getName();
+        if (rank.getPrefix() == null) {
+            return Component.text(p.getName(), rank.getColour());
+        } else return rank.getPrefix().append(RankProvider.getPlusOption(p).append(RankProvider.spacer)
+                .append(Component.text(p.getName(), rank.getColour())));
     }
 
 

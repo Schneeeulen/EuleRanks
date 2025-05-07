@@ -1,2 +1,3 @@
 chatfunction: true
-nametagPrefixes: false
+nametagPrefixes: true
+grayNametags: false

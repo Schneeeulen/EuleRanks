@@ -15,12 +15,14 @@ public final class Eule extends JavaPlugin {
 
     // Configs
     public static Boolean nametagPrefixes;
+    public static Boolean grayNametags;
 
     @Override
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
         nametagPrefixes = this.getConfig().getBoolean("nametagPrefixes");
+        grayNametags = this.getConfig().getBoolean("grayNametags");
 
         // Commands
         getCommand("euleranks").setExecutor(new PluginCommand());
