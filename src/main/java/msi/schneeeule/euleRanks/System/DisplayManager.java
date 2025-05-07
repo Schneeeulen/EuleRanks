@@ -34,7 +34,7 @@ public class DisplayManager implements Listener {
         int priority = 1000 - RankProvider.Ranks.getRank(p).getPriority();
         if (p.hasPermission("owl.rank.plus")) priority = priority - RankProvider.plus_priority_boost;
         if (priority < 0) priority = 0;
-        String teamname = priority + "." + p.getName().toLowerCase();
+        String teamname = String.format("%04d", priority) + "." + p.getName().toLowerCase();
         if (p.getScoreboard().getTeam(teamname) == null) {
             p.getScoreboard().registerNewTeam(teamname);
         }
