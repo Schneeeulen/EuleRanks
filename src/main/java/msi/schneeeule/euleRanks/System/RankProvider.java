@@ -61,7 +61,7 @@ public class RankProvider {
         }
     }
 
-    public static Component spacer = Component.text(" ¦ ", NamedTextColor.GRAY);
+    public static Component spacer = Component.text(" ¦ ", NamedTextColor.WHITE);
     public static int plus_priority_boost = 10;
 
     public static Component getPlusOption(Player p) {
