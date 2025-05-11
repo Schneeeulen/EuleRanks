@@ -45,7 +45,7 @@ public class DisplayManager implements Listener {
         team.addPlayer(p);
         team.setColor(Eule.grayNametags ? ChatColor.GRAY : ChatColor.WHITE);
         if (Eule.nametagPrefixes && rank.getPrefix() != null) {
-            team.prefix(rank.getPrefix().append(RankProvider.getPlusOption(p).append(RankProvider.spacer)));
+            team.prefix(rank.getPrefix().append(RankProvider.getPlusOption(p).append(Eule.spacer)));
         }
         Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TEAM));
     }
@@ -73,7 +73,7 @@ public class DisplayManager implements Listener {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
         if (rank.getPrefix() == null) {
             return Component.text(p.getName(), Eule.whiteTabNames ? NamedTextColor.WHITE : rank.getColour());
-        } else return rank.getPrefix().append(RankProvider.getPlusOption(p).append(RankProvider.spacer)
+        } else return rank.getPrefix().append(RankProvider.getPlusOption(p).append(Eule.spacer)
                 .append(Component.text(p.getName(), Eule.whiteTabNames ? NamedTextColor.WHITE : rank.getColour())));
     }
 

@@ -15,7 +15,7 @@ public class ChatFunction implements Listener {
         String message = event.getMessage();
         event.setCancelled(true);
         Component playerNameComponent = (Eule.chatPrefixes && RankProvider.Ranks.getRank(event.getPlayer()).getPrefix() != null
-                ? RankProvider.Ranks.getRank(event.getPlayer()).getPrefix().append(RankProvider.spacer) : Component.empty())
+                ? RankProvider.Ranks.getRank(event.getPlayer()).getPrefix().append(Eule.spacer) : Component.empty())
                 .append(Component.text(event.getPlayer().getName(),
                                 Eule.whiteTabNames && Eule.chatPrefixes
                                         ? NamedTextColor.WHITE : RankProvider.Ranks.getRank(event.getPlayer()).getColour())

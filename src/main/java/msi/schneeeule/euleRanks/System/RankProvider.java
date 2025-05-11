@@ -21,7 +21,7 @@ public class RankProvider {
         VIP("owl.rank.vip", "VIP", "VIP", "#FF4F96", 500),
         MVP("owl.rank.mvp", "MVP", "MVP", "#6AF0FF", 400),
         PREMIUM("owl.rank.premium", "Premium", "Premium", "#47FF4A", 300),
-        USER("owl.rank.user", "User", null, "#C0C0C0", 100),
+        USER("owl.rank.user", "User", "User", "#C0C0C0", 100),
         FALLBACK(null, "User", null, "#C0C0C0", 0);
 
 
@@ -62,7 +62,6 @@ public class RankProvider {
         }
     }
 
-    public static Component spacer = Component.text(" ¦ ", Eule.graySpacer ? NamedTextColor.GRAY : NamedTextColor.WHITE);
     public static int plus_priority_boost = 10;
 
     public static Component getPlusOption(Player p) {

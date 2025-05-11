@@ -4,4 +4,4 @@ chatSpacer: "§7› "
 whiteTabNames: true
 nametagPrefixes: false
 grayNametags: false
-graySpacer: true
+spacer: "§7 ¦ "

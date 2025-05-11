@@ -5,6 +5,7 @@ import msi.schneeeule.euleRanks.Commands.RankCommand;
 import msi.schneeeule.euleRanks.System.ChatFunction;
 import msi.schneeeule.euleRanks.System.DisplayManager;
 import msi.schneeeule.euleRanks.System.LuckPermsIntegration;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +17,7 @@ public final class Eule extends JavaPlugin {
     // Configs
     public static Boolean chatfunction, chatPrefixes, whiteTabNames, nametagPrefixes, grayNametags, graySpacer;
     public static String chatSpacer;
+    public static Component spacer;
 
     @Override
     public void onEnable() {
@@ -28,6 +30,7 @@ public final class Eule extends JavaPlugin {
         grayNametags = this.getConfig().getBoolean("grayNametags");
         graySpacer = this.getConfig().getBoolean("graySpacer");
         chatSpacer = this.getConfig().getString("chatSpacer");
+        spacer = Component.text(this.getConfig().getString("spacer"));
 
         // Commands
         getCommand("euleranks").setExecutor(new PluginCommand());

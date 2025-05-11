@@ -12,6 +12,8 @@ permissions:
   owl.command.eulerankplugin:
     default: op
 
+  owl.premium:
+    default: false
   owl.premium.special:
     default: false
 
