@@ -3,6 +3,7 @@ package msi.schneeeule.euleRanks.System;
 import msi.schneeeule.euleRanks.Eule;
 import msi.schneeeule.euleRanks.Events.RankDisplayUpdateEvent;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -64,21 +65,16 @@ public class DisplayManager implements Listener {
     }
 
     public static void setPlayerListName(Player p) {
-        RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
-        if (rank.getPrefix() == null) {
-            p.playerListName(Component.text(p.getName(), rank.getColour()));
-        } else p.playerListName(rank.getPrefix()
-                .append(RankProvider.getPlusOption(p))
-                .append(RankProvider.spacer).append(Component.text(p.getName(), rank.getColour())));
+        p.playerListName(getPlayerListName(p));
         Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TABLIST));
     }
 
     public static Component getPlayerListName(Player p) {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
         if (rank.getPrefix() == null) {
-            return Component.text(p.getName(), rank.getColour());
+            return Component.text(p.getName(), Eule.whiteTabNames ? NamedTextColor.WHITE : rank.getColour());
         } else return rank.getPrefix().append(RankProvider.getPlusOption(p).append(RankProvider.spacer)
-                .append(Component.text(p.getName(), rank.getColour())));
+                .append(Component.text(p.getName(), Eule.whiteTabNames ? NamedTextColor.WHITE : rank.getColour())));
     }
 
 

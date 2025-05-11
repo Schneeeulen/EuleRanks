@@ -1,2 +1,2 @@
 # Elektroeule Rank Provider
-Eule Ranks with prefix, colour, tablist, teams for display names, and priority
+Schneeeule's Plugin für Ränge mit Prefix, Farbe, Tablist, Nametags, Priorität und mehr!

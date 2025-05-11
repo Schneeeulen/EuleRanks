@@ -14,15 +14,20 @@ public final class Eule extends JavaPlugin {
     public static Boolean foundLuckPerms = false;
 
     // Configs
-    public static Boolean nametagPrefixes;
-    public static Boolean grayNametags;
+    public static Boolean chatfunction, chatPrefixes, whiteTabNames, nametagPrefixes, grayNametags, graySpacer;
+    public static String chatSpacer;
 
     @Override
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        chatfunction = this.getConfig().getBoolean("chatfunction");
+        chatPrefixes = this.getConfig().getBoolean("chatPrefixes");
+        whiteTabNames = this.getConfig().getBoolean("whiteTabNames");
         nametagPrefixes = this.getConfig().getBoolean("nametagPrefixes");
         grayNametags = this.getConfig().getBoolean("grayNametags");
+        graySpacer = this.getConfig().getBoolean("graySpacer");
+        chatSpacer = this.getConfig().getString("chatSpacer");
 
         // Commands
         getCommand("euleranks").setExecutor(new PluginCommand());
@@ -31,7 +36,7 @@ public final class Eule extends JavaPlugin {
 
         // EventHandler
         Bukkit.getServer().getPluginManager().registerEvents(new DisplayManager(), this);
-        if (this.getConfig().getBoolean("chatfunction")) Bukkit.getServer().getPluginManager().registerEvents(new ChatFunction(), this);
+        if (chatfunction) Bukkit.getServer().getPluginManager().registerEvents(new ChatFunction(), this);
 
         // LuckPerms
         if (Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null) {

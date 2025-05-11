@@ -1,5 +1,6 @@
 package msi.schneeeule.euleRanks.System;
 
+import msi.schneeeule.euleRanks.Eule;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -61,7 +62,7 @@ public class RankProvider {
         }
     }
 
-    public static Component spacer = Component.text(" ¦ ", NamedTextColor.WHITE);
+    public static Component spacer = Component.text(" ¦ ", Eule.graySpacer ? NamedTextColor.GRAY : NamedTextColor.WHITE);
     public static int plus_priority_boost = 10;
 
     public static Component getPlusOption(Player p) {

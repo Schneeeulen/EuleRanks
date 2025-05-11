@@ -1,3 +1,7 @@
 chatfunction: true
-nametagPrefixes: true
-grayNametags: true
+chatPrefixes: false
+chatSpacer: "§7› "
+whiteTabNames: true
+nametagPrefixes: false
+grayNametags: false
+graySpacer: true
