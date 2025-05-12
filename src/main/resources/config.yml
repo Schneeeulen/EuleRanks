@@ -1,6 +1,7 @@
 chatfunction: true
 chatPrefixes: false
 chatSpacer: "§7› "
+tabPrefixes: true
 whiteTabNames: true
 nametagPrefixes: false
 grayNametags: false

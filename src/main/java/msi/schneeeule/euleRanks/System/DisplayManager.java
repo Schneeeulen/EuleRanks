@@ -71,6 +71,7 @@ public class DisplayManager implements Listener {
 
     public static Component getPlayerListName(Player p) {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
+        if (!Eule.tabPrefixes) return Component.text(p.getName(), rank.getColour());
         if (rank.getPrefix() == null) {
             return Component.text(p.getName(), Eule.whiteTabNames ? NamedTextColor.WHITE : rank.getColour());
         } else return rank.getPrefix().append(RankProvider.getPlusOption(p).append(Eule.spacer)
