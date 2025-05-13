@@ -293,8 +293,7 @@ public class LuckPermsIntegration {
             for (RankProvider.Ranks rank : RankProvider.Ranks.values()) {
                 if (rank.getPermission() == null) continue;
 
-                boolean hasPermission = user.getCachedData().getPermissionData().checkPermission(rank.getPermission()).asBoolean();
-                if (hasPermission) {
+                if (user.getCachedData().getPermissionData().checkPermission(rank.getPermission()).asBoolean()) {
                     return rank;
                 }
             }

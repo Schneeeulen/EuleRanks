@@ -111,7 +111,8 @@ public class RankCommand implements CommandExecutor {
 
             for (RankProvider.Ranks rank : RankProvider.Ranks.values()) {
                 if (rank.getPermission() == null) continue;
-                if (LuckPermsIntegration.hasLifetimePermission(p, rank.getPermission()) && rank.getPriority() < 500) {
+                if (LuckPermsIntegration.hasLifetimePermission(p, rank.getPermission()) && rank.getPriority() < 500
+                        && rank != RankProvider.Ranks.USER && rank != RankProvider.Ranks.FALLBACK) {
                     builder.appendNewline()
                             .append(text("› Zudem besitzt du dauerhaft ", NamedTextColor.GRAY))
                             .append(rank.getColouredName());
