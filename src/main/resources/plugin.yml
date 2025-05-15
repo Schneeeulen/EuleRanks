@@ -22,7 +22,7 @@ permissions:
   owl.commands.rank.other:
     default: op
 
-  owl.chat.colourcodes:
+  owl.colour.chat:
     default: op
 
   owl.rank.administration:

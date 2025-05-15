@@ -71,5 +71,12 @@ public class RankProvider {
         return Component.text("");
     }
 
+    public static String getFormattedPriority(Player p) {
+        int priority = 1000 - RankProvider.Ranks.getRank(p).getPriority();
+        if (p.hasPermission("owl.rank.plus")) priority = priority - RankProvider.plus_priority_boost;
+        if (priority < 0) priority = 0;
+        return String.format("%04d", priority);
+    }
+
 
 }

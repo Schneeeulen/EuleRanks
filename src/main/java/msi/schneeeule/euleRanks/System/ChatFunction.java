@@ -13,20 +13,23 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class ChatFunction implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        String message = event.getMessage();
-        Player p = event.getPlayer();
+        sendMessageAsPlayer(event.getPlayer(), event.getMessage(), false);
         event.setCancelled(true);
+    }
+
+    public static void sendMessageAsPlayer(Player p, String message, Boolean forceColours) {
         Component formattedMessage = (Eule.chatPrefixes && RankProvider.Ranks.getRank(p).getPrefix() != null
                 ? RankProvider.Ranks.getRank(p).getPrefix().append(RankProvider.getPlusOption(p)).append(Eule.spacer)
                 : Component.empty())
                 .append(Component.text(p.getName(),
                                 Eule.whiteTabNames && Eule.chatPrefixes
                                         ? NamedTextColor.WHITE : RankProvider.Ranks.getRank(p).getColour())
-                .append(Component.text(Eule.chatSpacer))
-                .append(Component.text(p.hasPermission("owl.chat.colourcodes")
-                        ? ChatColor.translateAlternateColorCodes('&', message)
-                        : message, NamedTextColor.WHITE)));
+                        .append(Component.text(Eule.chatSpacer))
+                        .append(Component.text(p.hasPermission("owl.colour.chat") || forceColours
+                                ? ChatColor.translateAlternateColorCodes('&', message)
+                                : message, NamedTextColor.WHITE)));
 
         Bukkit.getServer().getOnlinePlayers().forEach(t -> t.sendMessage(formattedMessage));
     }
+
 }

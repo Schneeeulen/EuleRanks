@@ -34,10 +34,7 @@ public class DisplayManager implements Listener {
 
     public static void registerTeam(Player p) {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
-        int priority = 1000 - RankProvider.Ranks.getRank(p).getPriority();
-        if (p.hasPermission("owl.rank.plus")) priority = priority - RankProvider.plus_priority_boost;
-        if (priority < 0) priority = 0;
-        String teamname = String.format("%04d", priority) + "." + p.getName().toLowerCase();
+        String teamname = String.format("%04d",RankProvider.getFormattedPriority(p)) + "." + p.getName().toLowerCase();
         if (p.getScoreboard().getTeam(teamname) == null) {
             p.getScoreboard().registerNewTeam(teamname);
         }
@@ -54,7 +51,6 @@ public class DisplayManager implements Listener {
         for (Team team : p.getScoreboard().getTeams()) {
             if (team.getName().endsWith("."+p.getName().toLowerCase())) {
                 team.unregister();
-                break;
             }
         }
     }

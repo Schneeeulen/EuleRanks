@@ -116,7 +116,7 @@ public class RankCommand implements CommandExecutor {
                     builder.appendNewline()
                             .append(text("› Zudem besitzt du dauerhaft ", NamedTextColor.GRAY))
                             .append(rank.getColouredName());
-                    break;
+                    break; // Wichtig damit keine weiteren Ränge angezeigt werden!
                 }
             }
         }
