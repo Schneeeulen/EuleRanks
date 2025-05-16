@@ -34,7 +34,7 @@ public class DisplayManager implements Listener {
 
     public static void registerTeam(Player p) {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
-        String teamname = String.format("%04d",RankProvider.getFormattedPriority(p)) + "." + p.getName().toLowerCase();
+        String teamname = RankProvider.getFormattedPriority(p) + "." + p.getName().toLowerCase();
         if (p.getScoreboard().getTeam(teamname) == null) {
             p.getScoreboard().registerNewTeam(teamname);
         }
