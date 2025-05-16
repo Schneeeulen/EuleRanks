@@ -277,6 +277,59 @@ public class LuckPermsIntegration {
         });
     }
 
+    public static CompletableFuture<Duration> getPermissionDuration(UUID uuid, String permission) {
+        LuckPerms api = LuckPermsProvider.get();
+
+        return api.getUserManager().loadUser(uuid).thenApply(user -> {
+            if (user == null) {
+                return null;
+            }
+
+            Duration finalDuration = null;
+
+            for (Node node : user.getNodes()) {
+                if (node.getKey().equalsIgnoreCase(permission)) {
+                    if (!node.hasExpiry()) {
+                        return null;
+                    } else {
+                        Duration duration = node.getExpiryDuration();
+                        if (finalDuration == null || duration.compareTo(finalDuration) > 0) {
+                            finalDuration = duration;
+                        }
+                    }
+                }
+
+                if (node instanceof InheritanceNode inheritanceNode) {
+                    Group group = api.getGroupManager().getGroup(inheritanceNode.getGroupName());
+
+                    if (group != null) {
+                        for (Node groupNode : group.getNodes()) {
+                            if (groupNode.getKey().equalsIgnoreCase(permission)) {
+                                if (!groupNode.hasExpiry()) {
+                                    if (!inheritanceNode.hasExpiry()) {
+                                        return null;
+                                    } else {
+                                        Duration duration = inheritanceNode.getExpiryDuration();
+                                        if (finalDuration == null || duration.compareTo(finalDuration) > 0) {
+                                            finalDuration = duration;
+                                        }
+                                    }
+                                } else {
+                                    Duration groupPermissionDuration = groupNode.getExpiryDuration();
+                                    if (finalDuration == null || groupPermissionDuration.compareTo(finalDuration) > 0) {
+                                        finalDuration = groupPermissionDuration;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return finalDuration;
+        });
+    }
+
     public static CompletableFuture<Boolean> hasPermission(UUID uuid, String permission) {
         return LuckPermsProvider.get().getUserManager().loadUser(uuid).thenApply(user -> {
             if (user == null) return false;

@@ -67,7 +67,8 @@ public class PluginCommand implements CommandExecutor, TabCompleter {
                 if (rank == RankProvider.Ranks.FALLBACK) continue;
                 builder.append(Component.text("\n§7› "))
                         .append(rank.getColouredName())
-                        .append(Component.text("§7 ➟ §f" + rank.getPermission())
+                        .append(Component.text("§7 ➟ §f" + rank.getPermission()
+                                + "§7 (" + rank.getPriority() + ")")
                         );
             }
             sender.sendMessage(builder);
