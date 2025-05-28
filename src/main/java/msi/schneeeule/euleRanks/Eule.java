@@ -5,9 +5,12 @@ import msi.schneeeule.euleRanks.Commands.RankCommand;
 import msi.schneeeule.euleRanks.System.ChatFunction;
 import msi.schneeeule.euleRanks.System.DisplayManager;
 import msi.schneeeule.euleRanks.System.LuckPermsIntegration;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Eule extends JavaPlugin {
 
@@ -16,8 +19,7 @@ public final class Eule extends JavaPlugin {
 
     // Configs
     public static Boolean chatfunction, chatPrefixes, tabPrefixes, whiteTabNames, nametagPrefixes, grayNametags, graySpacer;
-    public static String chatSpacer;
-    public static Component spacer;
+    public static String chatSpacer, spacer;
 
     @Override
     public void onEnable() {
@@ -31,7 +33,7 @@ public final class Eule extends JavaPlugin {
         grayNametags = this.getConfig().getBoolean("grayNametags");
         graySpacer = this.getConfig().getBoolean("graySpacer");
         chatSpacer = this.getConfig().getString("chatSpacer");
-        spacer = Component.text(this.getConfig().getString("spacer"));
+        spacer = this.getConfig().getString("spacer");
 
         // Commands
         getCommand("euleranks").setExecutor(new PluginCommand());
@@ -53,5 +55,18 @@ public final class Eule extends JavaPlugin {
     @Override
     public void onDisable() {
         this.getLogger().info("Auf Wiedersehen!");
+    }
+
+    public static String translateColour(String message) {
+        Pattern pattern = Pattern.compile("&#[a-fA-F0-9]{6}");
+        Matcher matcher = pattern.matcher(message);
+
+        while (matcher.find()) {
+            String color = message.substring(matcher.start(), matcher.end());
+            message = message.replace(color, net.md_5.bungee.api.ChatColor.of(color.substring(1)).toString());
+            matcher = pattern.matcher(message);
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }

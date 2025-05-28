@@ -3,9 +3,6 @@ package msi.schneeeule.euleRanks.Commands;
 import msi.schneeeule.euleRanks.Eule;
 import msi.schneeeule.euleRanks.System.LuckPermsIntegration;
 import msi.schneeeule.euleRanks.System.RankProvider;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -16,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-import static net.kyori.adventure.text.Component.text;
 
 public class RankCommand implements CommandExecutor {
     @Override
@@ -29,19 +25,11 @@ public class RankCommand implements CommandExecutor {
 
         if (!Eule.foundLuckPerms) {
             RankProvider.Ranks pRank = RankProvider.Ranks.getRank(p);
-            Component msg = Component.textOfChildren(
-                    text("› Du hast aktuell den Rang: ", NamedTextColor.GRAY),
-                    pRank.getColouredName(),
-                    p.hasPermission("owl.rank.plus") ?
-                            Component.textOfChildren(
-                                    Component.newline(),
-                                    text("› Zudem hast du ein aktives ", NamedTextColor.GRAY),
-                                    text("Plus", pRank.getColour())
-                            ) : Component.empty(),
-                    Component.newline(),
-                    text("› Die Laufzeiten konnten nicht berechnet werden!", NamedTextColor.GRAY)
+            p.sendMessage("§7› Du hast aktuell den Rang: "
+                    + pRank.getColouredName() + (p.hasPermission("owl.rank.plus") ?
+                    "\n§7› Zudem hast du ein aktives " + pRank.getColour() + "Plus"
+                    : "") + "\n§7› Die Laufzeiten konnten nicht berechnet werden!"
             );
-            p.sendMessage(msg);
             return true;
         }
 
@@ -53,88 +41,78 @@ public class RankCommand implements CommandExecutor {
                 return true;
             }
 
-            TextComponent.Builder builder = Component.text();
-            builder.appendNewline();
-            builder.append(text("› " + target.getName() + " hat den Rang:", NamedTextColor.GRAY));
-            builder.appendNewline();
-            builder.append(text("› ", NamedTextColor.GRAY))
-                    .append(LuckPermsIntegration.getRank(uuid).getColouredName());
+            if (LuckPermsIntegration.getRank(uuid) == RankProvider.Ranks.FALLBACK) {
+                sender.sendMessage("\n§7› " + Bukkit.getOfflinePlayer(uuid).getName() + " hat keinen Premium-Rang!\n");
+                return true;
+            }
+
+            StringBuilder builder = new StringBuilder();
+
+            builder.append("\n§7› " + Bukkit.getOfflinePlayer(uuid).getName() + " hat den Rang:\n"
+                    + "§7› " + LuckPermsIntegration.getRank(uuid).getColouredName());
 
             LuckPermsIntegration.hasPermission(uuid, "owl.rank.plus").thenAccept(hasPermission -> {
-                if (hasPermission) {
-                    builder.appendNewline()
-                            .append(text("› Das ", NamedTextColor.GRAY))
-                            .append(text("Plus", LuckPermsIntegration.getRank(uuid).getColour()))
-                            .append(text(" ist aktiv", NamedTextColor.GRAY));
-                }
-                builder.appendNewline();
-                sender.sendMessage(builder.build());
+                if (hasPermission) builder.append("\n§7› Das " + LuckPermsIntegration.getRank(uuid).getColour()
+                        + "Plus §7ist aktiv\n ");
+                else builder.append("\n ");
+
+                sender.sendMessage(builder.toString());
             });
             return true;
         }
 
-        if (RankProvider.Ranks.getRank(p) == RankProvider.Ranks.USER) {
-            p.sendMessage(text("› Du verfügst aktuell über keinen Premium-Rang!", NamedTextColor.GRAY));
+        if (RankProvider.Ranks.getRank(p) == RankProvider.Ranks.USER
+                || RankProvider.Ranks.getRank(p) == RankProvider.Ranks.FALLBACK) {
+            p.sendMessage("§7› Du verfügst aktuell über keinen Premium-Rang!");
 
             if (p.hasPermission("owl.rank.plus")) {
                 if (LuckPermsIntegration.hasLifetimePermission(p, "owl.rank.plus")) {
-                    p.sendMessage(text("› Allerdings hast du ein ", NamedTextColor.GRAY)
-                            .append(text("Plus", NamedTextColor.GREEN))
-                            .append(text(" ohne eingetragene Ablaufzeit", NamedTextColor.GRAY)));
-                } else {
-                    p.sendMessage(Component.textOfChildren(
-                            text("› Allerdings hast du noch ein ", NamedTextColor.GRAY),
-                            text("Plus", NamedTextColor.GREEN),
-                            text(" für ", NamedTextColor.GRAY),
-                            text(LuckPermsIntegration.getPermissionTime(p, "owl.rank.plus"), NamedTextColor.WHITE)
-                    ));
-                }
+                    p.sendMessage("§7› Allerdings hast du ein §aPlus§7 ohne eingetragene Ablaufzeit");
+                } else p.sendMessage("§7› Allerdings hast du noch ein §aPlus§7 für §f"
+                        + LuckPermsIntegration.getPermissionTime(p, "owl.rank.plus"));
             }
             return true;
         }
 
         RankProvider.Ranks pRank = RankProvider.Ranks.getRank(p);
-        TextComponent.Builder builder = Component.text();
+        StringBuilder builder = new StringBuilder();
 
         if (LuckPermsIntegration.hasLifetimePermission(p, pRank.getPermission())) {
-            builder.append(text("› Du hast ", NamedTextColor.GRAY));
-            if (!p.hasPermission("owl.team.member") && !p.hasPermission("owl.premium.special")) {
-                builder.append(text("dauerhaft ", NamedTextColor.GRAY));
+            // Lifetime Premium
+            builder.append("§7› Du hast ");
+            if (p.hasPermission("owl.team.member") || p.hasPermission("owl.premium.special")) {
+                // Durch speziellen Rang
+            }  else {
+                builder.append("dauerhaft ");
             }
-            builder.append(text("den Rang: ", NamedTextColor.GRAY))
-                    .append(pRank.getColouredName());
+            builder.append("den Rang: " + pRank.getColouredName() + "\n");
         } else {
-            builder.append(text("› Du hast noch ", NamedTextColor.GRAY))
-                    .append(text(LuckPermsIntegration.getPermissionTime(p, pRank.getPermission()), NamedTextColor.WHITE))
-                    .append(text(" den Rang: ", NamedTextColor.GRAY))
-                    .append(pRank.getColouredName());
+            // Begrenzt Premium
+            builder.append("§7› Du hast noch §f"
+                    + LuckPermsIntegration.getPermissionTime(p, pRank.getPermission()) +
+                    " §7den Rang: " + pRank.getColour() + "\n");
 
             for (RankProvider.Ranks rank : RankProvider.Ranks.values()) {
                 if (rank.getPermission() == null) continue;
                 if (LuckPermsIntegration.hasLifetimePermission(p, rank.getPermission()) && rank.getPriority() < 500
                         && rank != RankProvider.Ranks.USER && rank != RankProvider.Ranks.FALLBACK) {
-                    builder.appendNewline()
-                            .append(text("› Zudem besitzt du dauerhaft ", NamedTextColor.GRAY))
-                            .append(rank.getColouredName());
-                    break; // Wichtig damit keine weiteren Ränge angezeigt werden!
+                    builder.append("§7› Zudem besitzt du dauerhaft " + rank.getColouredName() + "\n");
+                    break;
                 }
             }
+
         }
 
         if (LuckPermsIntegration.hasLifetimePermission(p, "owl.rank.plus")) {
-            builder.appendNewline()
-                    .append(text("› Dein ", NamedTextColor.GRAY))
-                    .append(text("Plus", pRank.getColour()))
-                    .append(text(" hat keine eingetragene Ablaufzeit", NamedTextColor.GRAY));
+            // Dauerhaft Plus
+            builder.append("§7› Dein " + pRank.getColour() + "Plus§7 hat keine eingetragene Ablaufzeit");
         } else if (p.hasPermission("owl.rank.plus")) {
-            builder.appendNewline()
-                    .append(text("› Dein ", NamedTextColor.GRAY))
-                    .append(text("Plus", pRank.getColour()))
-                    .append(text(" hält noch ", NamedTextColor.GRAY))
-                    .append(text(LuckPermsIntegration.getPermissionTime(p, "owl.rank.plus"), NamedTextColor.WHITE));
+            builder.append("§7› Dein " + pRank.getColour() + "Plus§7 hält noch §f"
+                    + LuckPermsIntegration.getPermissionTime(p, "owl.rank.plus"));
         }
 
-        p.sendMessage(builder.build());
+        p.sendMessage(builder.toString());
+
         return true;
     }
 }
