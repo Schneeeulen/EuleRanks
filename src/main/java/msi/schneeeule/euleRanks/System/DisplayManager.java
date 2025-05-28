@@ -2,8 +2,6 @@ package msi.schneeeule.euleRanks.System;
 
 import msi.schneeeule.euleRanks.Eule;
 import msi.schneeeule.euleRanks.Events.RankDisplayUpdateEvent;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -41,8 +39,8 @@ public class DisplayManager implements Listener {
         Team team = p.getScoreboard().getTeam(teamname);
         team.addPlayer(p);
         team.setColor(Eule.grayNametags ? ChatColor.GRAY : ChatColor.WHITE);
-        if (Eule.nametagPrefixes && rank.getPrefix() != null) {
-            team.prefix(rank.getPrefix().append(RankProvider.getPlusOption(p).append(Eule.spacer)));
+        if (Eule.nametagPrefixes && rank.getColouredPrefix() != null) {
+            team.setPrefix(rank.getColouredPrefix() + RankProvider.getPlusOption(p) + Eule.spacer);
         }
         Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TEAM));
     }
@@ -61,17 +59,17 @@ public class DisplayManager implements Listener {
     }
 
     public static void setPlayerListName(Player p) {
-        p.playerListName(getPlayerListName(p));
+        p.setPlayerListName(getPlayerListName(p));
         Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TABLIST));
     }
 
-    public static Component getPlayerListName(Player p) {
+    public static String getPlayerListName(Player p) {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
-        if (!Eule.tabPrefixes) return Component.text(p.getName(), rank.getColour());
-        if (rank.getPrefix() == null) {
-            return Component.text(p.getName(), Eule.whiteTabNames ? NamedTextColor.WHITE : rank.getColour());
-        } else return rank.getPrefix().append(RankProvider.getPlusOption(p).append(Eule.spacer)
-                .append(Component.text(p.getName(), Eule.whiteTabNames ? NamedTextColor.WHITE : rank.getColour())));
+        if (!Eule.tabPrefixes) return rank.getColour() + p.getName();
+        if (rank.getColouredPrefix() == null) {
+            return Eule.whiteTabNames ? p.getName() : rank.getColour() + p.getName();
+        } else return rank.getColouredPrefix() + RankProvider.getPlusOption(p)
+                + Eule.spacer + (Eule.whiteTabNames ? "§r" + p.getName() : rank.getColour() + p.getName());
     }
 
 

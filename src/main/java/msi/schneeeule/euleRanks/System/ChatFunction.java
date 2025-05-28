@@ -1,10 +1,7 @@
 package msi.schneeeule.euleRanks.System;
 
 import msi.schneeeule.euleRanks.Eule;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,18 +16,18 @@ public class ChatFunction implements Listener {
     }
 
     public static void sendMessageAsPlayer(Player p, String message) {
-        Component formattedMessage = (Eule.chatPrefixes && RankProvider.Ranks.getRank(p).getPrefix() != null
-                ? RankProvider.Ranks.getRank(p).getPrefix().append(RankProvider.getPlusOption(p)).append(Eule.spacer)
-                : Component.empty())
-                .append(Component.text(p.getName(),
-                                Eule.whiteTabNames && Eule.chatPrefixes
-                                        ? NamedTextColor.WHITE : RankProvider.Ranks.getRank(p).getColour())
-                        .append(Component.text(Eule.chatSpacer))
-                        .append(Component.text(p.hasPermission("owl.colour.chat")
-                                ? ChatColor.translateAlternateColorCodes('&', message)
-                                : message, NamedTextColor.WHITE)));
+        Bukkit.getServer().getOnlinePlayers().forEach(t -> t.sendMessage(
+                (Eule.chatPrefixes && RankProvider.Ranks.getRank(p).getColouredPrefix() != null
+                        ? RankProvider.Ranks.getRank(p).getColouredPrefix() + RankProvider.getPlusOption(p) + Eule.spacer
+                        : ""
+                ) + (Eule.whiteTabNames && Eule.chatPrefixes
+                        ? "§f" + p.getName() : RankProvider.Ranks.getRank(p).getColour() + p.getName()
+                ) + Eule.chatSpacer + "§r" + (p.hasPermission("owl.colour.chat")
+                        ? Eule.translateColour(message)
+                        : message
+                )
 
-        Bukkit.getServer().getOnlinePlayers().forEach(t -> t.sendMessage(formattedMessage));
+        ));
     }
 
 }

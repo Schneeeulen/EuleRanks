@@ -54,7 +54,7 @@ permissions:
   owl.rank.premium:
     default: false
   owl.rank.user:
-    default: true
+    default: false
 
 commands:
   rank:

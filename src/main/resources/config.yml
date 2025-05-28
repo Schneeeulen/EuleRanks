@@ -2,7 +2,7 @@ chatfunction: true
 chatPrefixes: false
 chatSpacer: "§7› "
 tabPrefixes: true
-whiteTabNames: true
+whiteTabNames: false
 nametagPrefixes: false
 grayNametags: false
 spacer: "§7 ¦ "

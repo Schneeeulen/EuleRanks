@@ -2,8 +2,6 @@ package msi.schneeeule.euleRanks.Commands;
 
 import msi.schneeeule.euleRanks.System.DisplayManager;
 import msi.schneeeule.euleRanks.System.RankProvider;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -61,17 +59,15 @@ public class PluginCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args[0].equals("listranks")) {
-            TextComponent.Builder builder = Component.text();
-            builder.append(Component.text("§7› Es folgt eine Auflistung aller Ränge:"));
+            StringBuilder builder = new StringBuilder();
+            builder.append("§7› Es folgt eine Auflistung aller Ränge:");
+
             for (RankProvider.Ranks rank : RankProvider.Ranks.values()) {
                 if (rank == RankProvider.Ranks.FALLBACK) continue;
-                builder.append(Component.text("\n§7› "))
-                        .append(rank.getColouredName())
-                        .append(Component.text("§7 ➟ §f" + rank.getPermission()
-                                + "§7 (" + rank.getPriority() + ")")
-                        );
+                builder.append(("\n§7› ") + rank.getColouredName() + "§7 ➟ §f" + rank.getPermission()
+                        + "§7 (" + rank.getPriority() + ")");
             }
-            sender.sendMessage(builder);
+            sender.sendMessage(builder.toString());
             return true;
         }
 
