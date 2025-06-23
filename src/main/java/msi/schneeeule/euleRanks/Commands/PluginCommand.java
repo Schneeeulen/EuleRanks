@@ -90,7 +90,7 @@ public class PluginCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage("§7› Die Permission " + args[1] + " ist nicht über Rang-Gruppen verfügbar!");
             } else {
                 sender.sendMessage("§7› Die Permission §f" + args[1] + "§7 ist durch die Gruppe §f"
-                        + requiredRankByGroup.getKey() + "§7 mit dem Rang " + requiredRankByGroup.getValue() + "§7 verfügbar!");
+                        + requiredRankByGroup.getKey() + "§7 mit dem Rang §d" + requiredRankByGroup.getValue() + "§7 verfügbar!");
             }
 
             return true;

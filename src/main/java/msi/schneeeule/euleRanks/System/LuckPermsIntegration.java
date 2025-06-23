@@ -399,7 +399,7 @@ public class LuckPermsIntegration {
                 }
             }
 
-            if (plus) return Pair.of(groupName, "Plus");
+            if (plus && groupName != null) return Pair.of(groupName, "Plus");
             if (rank == null) return null;
             return Pair.of(groupName, rank.getColouredName());
 
