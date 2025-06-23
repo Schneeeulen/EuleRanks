@@ -11,6 +11,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.InheritanceNode;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -355,6 +356,50 @@ public class LuckPermsIntegration {
         }
 
         return RankProvider.Ranks.FALLBACK;
+    }
+
+    public static Pair<String, String> getRequiredRankByGroup(String permission) {
+        LuckPerms api = LuckPermsProvider.get();
+        CompletableFuture<Void> loadFuture = api.getGroupManager().loadAllGroups();
+
+        try {
+            loadFuture.get();
+
+            RankProvider.Ranks rank = null;
+            String groupName = null;
+            int prio = Integer.MAX_VALUE;
+
+            for (Group group : api.getGroupManager().getLoadedGroups()) {
+                for (Node node : group.getNodes()) {
+                    if (node.getKey().equals(permission) && !node.hasExpiry()) {
+
+                        RankProvider.Ranks groupRank = null;
+
+                        for (Node rankNode : group.getNodes()) {
+                            RankProvider.Ranks nodeRank = RankProvider.Ranks.getRank(rankNode.getKey());
+                            if (nodeRank != null) {
+                                if (groupRank == null || nodeRank.getPriority() > groupRank.getPriority()) {
+                                    groupRank = nodeRank;
+                                }
+                            }
+                        }
+
+                        if (groupRank != null && groupRank.getPriority() < prio) {
+                            prio = groupRank.getPriority();
+                            rank = groupRank;
+                            groupName = group.getName();
+                        }
+                    }
+                }
+            }
+
+            if (rank == null) return null;
+            return Pair.of(groupName, rank.getColouredName());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

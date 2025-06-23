@@ -1,7 +1,10 @@
 package msi.schneeeule.euleRanks.Commands;
 
+import msi.schneeeule.euleRanks.Eule;
 import msi.schneeeule.euleRanks.System.DisplayManager;
+import msi.schneeeule.euleRanks.System.LuckPermsIntegration;
 import msi.schneeeule.euleRanks.System.RankProvider;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -48,7 +51,7 @@ public class PluginCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args[0].equals("clearteams")) {
-            for (Team team : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) {
+            for (Team team : Eule.teamScoreboard.getTeams()) {
                 team.unregister();
             }
             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -71,6 +74,28 @@ public class PluginCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args[0].equals("checkperms")) {
+            if (!Eule.foundLuckPerms) {
+                sender.sendMessage("§7› Dieser Unterbefehl ist nur mit LuckPerms verfügbar!");
+                return true;
+            }
+            if (args.length != 2) {
+                sender.sendMessage("§7› Benutze /euleranks checkperms <permission>");
+                return true;
+            }
+
+            Pair requiredRankByGroup = LuckPermsIntegration.getRequiredRankByGroup(args[1]);
+
+            if (requiredRankByGroup == null) {
+                sender.sendMessage("§7› Die Permission " + args[1] + " ist nicht über Rang-Gruppen verfügbar!");
+            } else {
+                sender.sendMessage("§7› Die Permission §f" + args[1] + "§7 ist durch die Gruppe §f"
+                        + requiredRankByGroup.getKey() + "§7 mit dem Rang " + requiredRankByGroup.getValue() + "§7 verfügbar!");
+            }
+
+            return true;
+        }
+
 
         sender.sendMessage("§7› Dieser Unterbefehl wurde nicht gefunden!");
         return false;
@@ -79,7 +104,7 @@ public class PluginCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            List<String> suggestions = Arrays.asList("fixdisplays", "updateplayer", "clearteams", "listranks");
+            List<String> suggestions = Arrays.asList("fixdisplays", "updateplayer", "clearteams", "listranks", "checkperms");
             List<String> result = new ArrayList<>();
             for (String suggestion : suggestions) {
                 if (suggestion.toLowerCase().startsWith(args[0].toLowerCase())) {

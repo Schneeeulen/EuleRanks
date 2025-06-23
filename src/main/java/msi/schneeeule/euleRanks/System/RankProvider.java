@@ -57,6 +57,16 @@ public class RankProvider {
             }
             return FALLBACK;
         }
+
+        public static Ranks getRank(String permission) {
+            for (Ranks rank : Ranks.values()) {
+                if (rank.permission == null) continue;
+                if (permission.equals(rank.permission)) {
+                    return rank;
+                }
+            }
+            return FALLBACK;
+        }
     }
 
     public static int plus_priority_boost = 10;

@@ -8,6 +8,7 @@ import msi.schneeeule.euleRanks.System.LuckPermsIntegration;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +17,7 @@ public final class Eule extends JavaPlugin {
 
     public static Eule instance;
     public static Boolean foundLuckPerms = false;
+    public static Scoreboard teamScoreboard;
 
     // Configs
     public static Boolean chatfunction, chatPrefixes, tabPrefixes, whiteTabNames, nametagPrefixes, grayNametags, graySpacer;
@@ -24,6 +26,7 @@ public final class Eule extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        teamScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         saveDefaultConfig();
         chatfunction = this.getConfig().getBoolean("chatfunction");
         chatPrefixes = this.getConfig().getBoolean("chatPrefixes");

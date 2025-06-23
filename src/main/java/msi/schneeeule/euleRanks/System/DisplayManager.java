@@ -33,10 +33,10 @@ public class DisplayManager implements Listener {
     public static void registerTeam(Player p) {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
         String teamname = RankProvider.getFormattedPriority(p) + "." + p.getName().toLowerCase();
-        if (p.getScoreboard().getTeam(teamname) == null) {
-            p.getScoreboard().registerNewTeam(teamname);
+        if (Eule.teamScoreboard.getTeam(teamname) == null) {
+            Eule.teamScoreboard.registerNewTeam(teamname);
         }
-        Team team = p.getScoreboard().getTeam(teamname);
+        Team team = Eule.teamScoreboard.getTeam(teamname);
         team.addPlayer(p);
         team.setColor(Eule.grayNametags ? ChatColor.GRAY : ChatColor.WHITE);
         if (Eule.nametagPrefixes && rank.getColouredPrefix() != null) {
@@ -46,7 +46,8 @@ public class DisplayManager implements Listener {
     }
 
     public static void unregisterTeam(Player p) {
-        for (Team team : p.getScoreboard().getTeams()) {
+        for (Team team : Eule.teamScoreboard.getTeams()) {
+            if (team == null) continue;
             if (team.getName().endsWith("."+p.getName().toLowerCase())) {
                 team.unregister();
             }
