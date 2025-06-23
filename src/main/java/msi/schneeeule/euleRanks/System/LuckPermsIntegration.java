@@ -368,6 +368,7 @@ public class LuckPermsIntegration {
             RankProvider.Ranks rank = null;
             String groupName = null;
             int prio = Integer.MAX_VALUE;
+            int weight = Integer.MAX_VALUE;
 
             for (Group group : api.getGroupManager().getLoadedGroups()) {
                 for (Node node : group.getNodes()) {
@@ -378,13 +379,14 @@ public class LuckPermsIntegration {
                         for (Node rankNode : group.getNodes()) {
                             RankProvider.Ranks nodeRank = RankProvider.Ranks.getRank(rankNode.getKey());
                             if (nodeRank != null) {
-                                if (groupRank == null || nodeRank.getPriority() > groupRank.getPriority()) {
+                                if (groupRank == null || nodeRank.getPriority() >= groupRank.getPriority()) {
                                     groupRank = nodeRank;
                                 }
                             }
                         }
 
-                        if (groupRank != null && groupRank.getPriority() < prio) {
+                        if (groupRank != null && groupRank.getPriority() <= prio && group.getWeight().orElse(0) < weight) {
+                            weight = group.getWeight().orElse(0);
                             prio = groupRank.getPriority();
                             rank = groupRank;
                             groupName = group.getName();
