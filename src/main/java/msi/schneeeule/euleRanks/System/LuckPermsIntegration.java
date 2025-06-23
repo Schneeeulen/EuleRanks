@@ -372,7 +372,7 @@ public class LuckPermsIntegration {
 
             for (Group group : api.getGroupManager().getLoadedGroups()) {
                 for (Node node : group.getNodes()) {
-                    if (node.getKey().equals(permission) && !node.hasExpiry()) {
+                    if (node.getKey().equals(permission) && !node.hasExpiry() && !node.isNegated()) {
 
                         RankProvider.Ranks groupRank = null;
 
