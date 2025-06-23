@@ -369,12 +369,14 @@ public class LuckPermsIntegration {
             String groupName = null;
             int prio = Integer.MAX_VALUE;
             int weight = Integer.MAX_VALUE;
+            boolean plus = true;
 
             for (Group group : api.getGroupManager().getLoadedGroups()) {
                 for (Node node : group.getNodes()) {
                     if (node.getKey().equals(permission) && !node.hasExpiry() && !node.isNegated()) {
 
                         RankProvider.Ranks groupRank = null;
+                        boolean plusRank = false;
 
                         for (Node rankNode : group.getNodes()) {
                             RankProvider.Ranks nodeRank = RankProvider.Ranks.getRank(rankNode.getKey());
@@ -382,10 +384,12 @@ public class LuckPermsIntegration {
                                 if (groupRank == null || nodeRank.getPriority() >= groupRank.getPriority()) {
                                     groupRank = nodeRank;
                                 }
-                            }
+                            } if (rankNode.getKey().equals("owl.rank.plus")) plusRank = true;
                         }
 
+
                         if (groupRank != null && groupRank.getPriority() <= prio && group.getWeight().orElse(0) < weight) {
+                            if (plus && !plusRank) plus = false;
                             weight = group.getWeight().orElse(0);
                             prio = groupRank.getPriority();
                             rank = groupRank;
@@ -395,6 +399,7 @@ public class LuckPermsIntegration {
                 }
             }
 
+            if (plus) return Pair.of(groupName, "Plus");
             if (rank == null) return null;
             return Pair.of(groupName, rank.getColouredName());
 
