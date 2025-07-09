@@ -22,7 +22,7 @@ public class PluginCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) {
-            sender.sendMessage("§7› Elektroeule Rank Provider"); //Todo
+            sender.sendMessage("§7› Elektroeule Rank Provider " + Eule.instance.getPluginMeta().getVersion());
             return false;
         }
 
@@ -90,7 +90,7 @@ public class PluginCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage("§7› Die Permission " + args[1] + " ist nicht über Rang-Gruppen verfügbar!");
             } else {
                 sender.sendMessage("§7› Die Permission §f" + args[1] + "§7 ist durch die Gruppe §f"
-                        + requiredRankByGroup.getKey() + "§7 mit dem Rang §d" + requiredRankByGroup.getValue() + "§7 verfügbar!");
+                        + requiredRankByGroup.getKey() + "§7 mit dem Rang §f" + requiredRankByGroup.getValue() + "§7 verfügbar!");
             }
 
             return true;

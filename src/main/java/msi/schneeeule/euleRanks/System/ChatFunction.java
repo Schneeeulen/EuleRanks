@@ -16,18 +16,23 @@ public class ChatFunction implements Listener {
     }
 
     public static void sendMessageAsPlayer(Player p, String message) {
-        Bukkit.getServer().getOnlinePlayers().forEach(t -> t.sendMessage(
-                (Eule.chatPrefixes && RankProvider.Ranks.getRank(p).getColouredPrefix() != null
-                        ? RankProvider.Ranks.getRank(p).getColouredPrefix() + RankProvider.getPlusOption(p) + Eule.spacer
-                        : ""
-                ) + (Eule.whiteTabNames && Eule.chatPrefixes
-                        ? "§f" + p.getName() : RankProvider.Ranks.getRank(p).getColour() + p.getName()
-                ) + Eule.chatSpacer + "§r" + (p.hasPermission("owl.colour.chat")
-                        ? Eule.translateColour(message)
-                        : message
-                )
-
-        ));
+        Bukkit.getServer().getOnlinePlayers().forEach(t -> {
+            RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
+            t.sendMessage(
+                    (Eule.chatPrefixes && rank.getColouredPrefix() != null
+                            ? Eule.rankPrefixFormat
+                                    .replace("{RankColour}", rank.getColour())
+                                    .replace("{RankPrefix}", rank.getColouredPrefix())
+                            .replace("{PlusOption}", RankProvider.getPlusOption(p))
+                            : ""
+                    ) + (Eule.whiteTabNames && Eule.chatPrefixes
+                            ? "§f" + p.getName() : rank.getRank(p).getColour() + p.getName()
+                    ) + Eule.chatSpacer + "§r" + (p.hasPermission("owl.colour.chat")
+                            ? Eule.translateColour(message)
+                            : message
+                    )
+            );
+        });
     }
 
 }

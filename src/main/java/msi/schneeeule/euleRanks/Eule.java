@@ -21,7 +21,7 @@ public final class Eule extends JavaPlugin {
 
     // Configs
     public static Boolean chatfunction, chatPrefixes, tabPrefixes, whiteTabNames, nametagPrefixes, grayNametags, graySpacer;
-    public static String chatSpacer, spacer;
+    public static String chatSpacer, rankPrefixFormat;
 
     @Override
     public void onEnable() {
@@ -36,7 +36,7 @@ public final class Eule extends JavaPlugin {
         grayNametags = this.getConfig().getBoolean("grayNametags");
         graySpacer = this.getConfig().getBoolean("graySpacer");
         chatSpacer = this.getConfig().getString("chatSpacer");
-        spacer = this.getConfig().getString("spacer");
+        rankPrefixFormat = this.getConfig().getString("rankPrefixFormat");
 
         // Commands
         getCommand("euleranks").setExecutor(new PluginCommand());

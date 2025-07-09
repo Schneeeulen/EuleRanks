@@ -40,7 +40,12 @@ public class DisplayManager implements Listener {
         team.addPlayer(p);
         team.setColor(Eule.grayNametags ? ChatColor.GRAY : ChatColor.WHITE);
         if (Eule.nametagPrefixes && rank.getColouredPrefix() != null) {
-            team.setPrefix(rank.getColouredPrefix() + RankProvider.getPlusOption(p) + Eule.spacer);
+            team.setPrefix(rank.getColouredPrefix() + RankProvider.getPlusOption(p) +
+                    Eule.rankPrefixFormat
+                            .replace("{RankColour}", rank.getColour())
+                            .replace("{RankPrefix}", rank.getColouredPrefix())
+                            .replace("{PlusOption}", RankProvider.getPlusOption(p))
+            );
         }
         Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TEAM));
     }
@@ -69,8 +74,11 @@ public class DisplayManager implements Listener {
         if (!Eule.tabPrefixes) return rank.getColour() + p.getName();
         if (rank.getColouredPrefix() == null) {
             return Eule.whiteTabNames ? p.getName() : rank.getColour() + p.getName();
-        } else return rank.getColouredPrefix() + RankProvider.getPlusOption(p)
-                + Eule.spacer + (Eule.whiteTabNames ? "§r" + p.getName() : rank.getColour() + p.getName());
+        } else return Eule.rankPrefixFormat
+                .replace("{RankColour}", rank.getColour())
+                .replace("{RankPrefix}", rank.getColouredPrefix())
+                .replace("{PlusOption}", RankProvider.getPlusOption(p))
+                + (Eule.whiteTabNames ? "§r" + p.getName() : rank.getColour() + p.getName());
     }
 
 

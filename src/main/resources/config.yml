@@ -5,4 +5,4 @@ tabPrefixes: true
 whiteTabNames: false
 nametagPrefixes: false
 grayNametags: false
-spacer: "§7 ¦ "
+rankPrefixFormat: "{RankColour}{RankPrefix}{PlusOption}§7 ¦ "

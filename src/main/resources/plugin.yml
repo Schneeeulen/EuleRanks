@@ -60,7 +60,6 @@ commands:
   rank:
     permission: owl.commands.rank
     description: Shows your Rank
-    aliases: premium
   euleranks:
     permission: owl.command.eulerankplugin
     description: Manages the Plugin EuleRanks
