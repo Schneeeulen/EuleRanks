@@ -1,8 +1,6 @@
 chatfunction: true
-chatPrefixes: false
-chatSpacer: "§7› "
-tabPrefixes: true
-whiteTabNames: false
-nametagPrefixes: false
-grayNametags: false
-rankPrefixFormat: "{RankColour}{RankPrefix}{PlusOption}§7 ¦ "
+# between [ and ] will only be shown if the Rank-Prefix isn't null!
+chatFormat: "{RankColour}{PlayerName}§7› §f{Message}"
+tablistFormat: "[{RankColour}{RankPrefix}{PlusOption} §7¦ ]{RankColour}{PlayerName}"
+teamColour: "f"
+nametagPrefixFormat: ""

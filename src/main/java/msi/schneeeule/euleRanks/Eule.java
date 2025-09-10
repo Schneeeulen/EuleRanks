@@ -20,8 +20,8 @@ public final class Eule extends JavaPlugin {
     public static Scoreboard teamScoreboard;
 
     // Configs
-    public static Boolean chatfunction, chatPrefixes, tabPrefixes, whiteTabNames, nametagPrefixes, grayNametags, graySpacer;
-    public static String chatSpacer, rankPrefixFormat;
+    public static Boolean chatfunction;
+    public static String chatFormat, tablistFormat, nametagPrefixFormat, teamColour;
 
     @Override
     public void onEnable() {
@@ -29,14 +29,11 @@ public final class Eule extends JavaPlugin {
         teamScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         saveDefaultConfig();
         chatfunction = this.getConfig().getBoolean("chatfunction");
-        chatPrefixes = this.getConfig().getBoolean("chatPrefixes");
-        tabPrefixes = this.getConfig().getBoolean("tabPrefixes");
-        whiteTabNames = this.getConfig().getBoolean("whiteTabNames");
-        nametagPrefixes = this.getConfig().getBoolean("nametagPrefixes");
-        grayNametags = this.getConfig().getBoolean("grayNametags");
-        graySpacer = this.getConfig().getBoolean("graySpacer");
-        chatSpacer = this.getConfig().getString("chatSpacer");
-        rankPrefixFormat = this.getConfig().getString("rankPrefixFormat");
+        chatFormat = this.getConfig().getString("chatFormat");
+        tablistFormat = this.getConfig().getString("tablistFormat");
+        teamColour = this.getConfig().getString("teamColour")
+                .replace("§", "").replace("&", "");
+        nametagPrefixFormat= this.getConfig().getString("nametagPrefixFormat");
 
         // Commands
         getCommand("euleranks").setExecutor(new PluginCommand());
@@ -65,8 +62,8 @@ public final class Eule extends JavaPlugin {
         Matcher matcher = pattern.matcher(message);
 
         while (matcher.find()) {
-            String color = message.substring(matcher.start(), matcher.end());
-            message = message.replace(color, net.md_5.bungee.api.ChatColor.of(color.substring(1)).toString());
+            String colour = message.substring(matcher.start(), matcher.end());
+            message = message.replace(colour, net.md_5.bungee.api.ChatColor.of(colour.substring(1)).toString());
             matcher = pattern.matcher(message);
         }
 

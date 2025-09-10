@@ -38,15 +38,22 @@ public class DisplayManager implements Listener {
         }
         Team team = Eule.teamScoreboard.getTeam(teamname);
         team.addPlayer(p);
-        team.setColor(Eule.grayNametags ? ChatColor.GRAY : ChatColor.WHITE);
-        if (Eule.nametagPrefixes && rank.getColouredPrefix() != null) {
-            team.setPrefix(rank.getColouredPrefix() + RankProvider.getPlusOption(p) +
-                    Eule.rankPrefixFormat
-                            .replace("{RankColour}", rank.getColour())
-                            .replace("{RankPrefix}", rank.getColouredPrefix())
-                            .replace("{PlusOption}", RankProvider.getPlusOption(p))
-            );
+        if (ChatColor.getByChar(Eule.teamColour) != null) team.setColor(ChatColor.getByChar(Eule.teamColour));
+
+        if (Eule.nametagPrefixFormat != null) {
+            String formated = Eule.nametagPrefixFormat;
+
+            if (rank.getPrefix() == null) {
+                formated = formated.replaceAll("\\[.*?\\]", "");
+            } else formated = formated.replaceAll("\\[(.*?)\\]", "$1");
+
+            formated = formated.replace("{RankColour}", rank.getColour());
+            formated = formated.replace("{RankPrefix}", rank.getPrefix() != null ? rank.getPrefix() : "");
+            formated = formated.replace("{RankName}", rank.getName());
+            formated = formated.replace("{PlusOption}", RankProvider.getPlusOption(p));
+            team.setPrefix(Eule.translateColour(formated));
         }
+
         Bukkit.getPluginManager().callEvent(new RankDisplayUpdateEvent(p, RankDisplayUpdateEvent.DisplayType.TEAM));
     }
 
@@ -71,14 +78,20 @@ public class DisplayManager implements Listener {
 
     public static String getPlayerListName(Player p) {
         RankProvider.Ranks rank = RankProvider.Ranks.getRank(p);
-        if (!Eule.tabPrefixes) return rank.getColour() + p.getName();
-        if (rank.getColouredPrefix() == null) {
-            return Eule.whiteTabNames ? p.getName() : rank.getColour() + p.getName();
-        } else return Eule.rankPrefixFormat
-                .replace("{RankColour}", rank.getColour())
-                .replace("{RankPrefix}", rank.getColouredPrefix())
-                .replace("{PlusOption}", RankProvider.getPlusOption(p))
-                + (Eule.whiteTabNames ? "§r" + p.getName() : rank.getColour() + p.getName());
+
+        String formated = Eule.tablistFormat;
+
+        if (rank.getPrefix() == null) {
+            formated = formated.replaceAll("\\[.*?\\]", "");
+        } else formated = formated.replaceAll("\\[(.*?)\\]", "$1");
+
+        formated = formated.replace("{RankColour}", rank.getColour());
+        formated = formated.replace("{RankPrefix}", rank.getPrefix() != null ? rank.getPrefix() : "");
+        formated = formated.replace("{RankName}", rank.getName());
+        formated = formated.replace("{PlusOption}", RankProvider.getPlusOption(p));
+        formated = formated.replace("{PlayerName}", p.getName());
+
+        return Eule.translateColour(formated);
     }
 
 
