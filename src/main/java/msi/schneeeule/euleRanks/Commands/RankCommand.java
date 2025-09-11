@@ -90,7 +90,7 @@ public class RankCommand implements CommandExecutor {
             // Begrenzt Premium
             builder.append("§7› Du hast noch §f"
                     + LuckPermsIntegration.getPermissionTime(p, pRank.getPermission()) +
-                    " §7den Rang: " + pRank.getColour() + "\n");
+                    " §7den Rang: " + pRank.getColour() + pRank.getName() + "\n");
 
             for (RankProvider.Ranks rank : RankProvider.Ranks.values()) {
                 if (rank.getPermission() == null) continue;
@@ -105,7 +105,7 @@ public class RankCommand implements CommandExecutor {
 
         if (LuckPermsIntegration.hasLifetimePermission(p, "owl.rank.plus")) {
             // Dauerhaft Plus
-            builder.append("§7› Dein " + pRank.getColour() + "Plus§7 hat keine eingetragene Ablaufzeit");
+            builder.append("§7› Dein " + pRank.getColour() + "Plus§7 hat keine Ablaufzeit");
         } else if (p.hasPermission("owl.rank.plus")) {
             builder.append("§7› Dein " + pRank.getColour() + "Plus§7 hält noch §f"
                     + LuckPermsIntegration.getPermissionTime(p, "owl.rank.plus"));
